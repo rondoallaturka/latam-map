@@ -20,6 +20,8 @@ export default function MapPage() {
         <MapChart onSelect={handleSelect} />
         <DataCard countries={selectedCountries} />
       </div>
+      <MapChart onSelect={handleSelect} />
+      <div className="mt-4 text-sm">Selected: {selectedCountries.join(', ') || 'none'}</div>
     </div>
   );
 }
