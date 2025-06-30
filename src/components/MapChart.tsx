@@ -6,7 +6,14 @@ import type { FeatureCollection } from 'geojson';
 import * as htmlToImage from 'html-to-image';
 import { saveAs } from 'file-saver';
 
-export default function MapChart() {
+export interface MapChartProps {
+  /**
+   * Called when the user selects a country on the map.
+   */
+  onSelect?: (country: string) => void;
+}
+
+export default function MapChart({ onSelect }: MapChartProps) {
   /* state & refs */
   const [geo, setGeo] = useState<FeatureCollection | null>(null);
   const [pop, setPop] = useState<Record<string, number>>({});
@@ -87,6 +94,7 @@ export default function MapChart() {
       mouseout:  () => layer.setStyle({ weight: 0.5, color: 'rgba(255,255,255,0.5)' })
     });
     layer.on('click', () => {
+      if (onSelect) onSelect(name);
       if (!mapRef.current) return;
       const bounds = (layer as any).getBounds() as L.LatLngBounds;
       const pad: L.PointTuple = [40, 40];
